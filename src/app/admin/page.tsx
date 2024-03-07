@@ -1,7 +1,5 @@
 "use client"
-import styles from "./page.module.css";
 import { useState, useEffect } from 'react'
-import { work_options, skill_option, work_default, skill_default, weapon_options, weapon_default } from './data'
 import {
   Form,
   Input,
@@ -148,7 +146,7 @@ export default function Home() {
               <Input />
             </Form.Item>
             <Form.Item
-              label={"MP(" + value.HP_MAX + ")"}
+              label={"MP(" + value.MP_MAX + ")"}
               name="MP"
             >
               <Input />

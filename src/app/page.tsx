@@ -97,6 +97,14 @@ export default function Home() {
 
 
   const attlist = ['力量', '体质', '敏捷', '外貌', '意志', '体型', '教育', '智力']
+  const atthelp = ["0：衰弱：甚至无法站立，连杯茶都端不起来。15：羸弱，无力。50：普通人的力量。90：你所见过的最强壮的人之一。99：世界级水平（奥运会举重选手）。人类极限。140：超越人类之力（大猩猩或马匹）。",
+  " 0：死亡。1：病弱，长期卧病在床，无人协助时几乎无法行动。15：身体虚弱，容易生病，疼痛常伴。50：健康普通人的体质。90：不畏寒冷，健壮而精神。99：钢铁之躯，能够承受大量伤痛。人类极限。140：超越人类的体质（如大象）。200+：怪物之体，免疫大多数地球疾病",
+  "0：无人协助便无法移动。15：迟缓，协调性差，难以完成精密操作。50：普通人的敏捷。90：迅捷，灵活，能够胜任紧密操作（如杂技演员，出色的舞者）。99：世界级运动员，人类极限。120：超越人类之速（如老虎）。200+：闪电之速，行动之迅捷远超人类理解之外。",
+  "0：不堪入目，他人将对其抱有恐惧、厌恶或怜悯。15：丑陋，或许曾因故毁容或先天缺陷。50：普通人的外貌。90：你所见过的最迷人的人之一，具有先天吸引力。99：美和酷的顶点（超模或世界级影星）。人类极限",
+  "0：精神衰弱，缺乏意志力，毫无魔法潜能。15：意志薄弱，容易被更具智慧或意志力的人左右。50：普通人的意志。90：意志坚强，有动力，具有较高潜力来沟通魔法与不可视之物。100：钢铁意志，与心灵‘秘境’和不可视世界具有紧密连接。 140：超越人类，或许是神话存在。210+：滔天魔法潜能，超乎人类理解的伟岸意志",
+  "1：婴儿（1-12磅/1-6kg）。15：儿童，身材矮小（侏儒）（33磅/15kg）。65：普通人的体型（中等身高体重）（170磅/75kg）。80：高大，壮硕，或肥胖（240磅/110kg）。99：在某一方面算是超大号（330磅/150kg）。150：马或牛（960磅/440kg）。180：有史以来最重的人类（1400磅/640kg）。200+：1920 磅/872kg",
+  "0：新生婴儿。15：未曾受过任何类型的教育。60：高中毕业。70：大学毕业（学士学位）。80：研究生毕业（硕士学位）。90：博士，教授。96：某一领域的世界级权威。99：人类极限。",
+  "0：没有智力，无法理解身边的世界。15：学习速度慢，只能完成最基础的数学运算或阅读初学者级别的书籍。50：普通人的智力。90：才思敏捷，很可能理解多种语言或定理。99：天才（爱因斯坦，达芬奇，特斯拉等）。人类极限。140：超越人类之智"]
 
   useEffect(() => {
     const queryStr = window.location.search.split("?")[1];
@@ -130,7 +138,7 @@ export default function Home() {
       pcnew["story"] = {}
     }
     if (!("item" in pcnew)) {
-      pcnew["item"] = {}
+      pcnew["item"] = ""
     }
     // 属性
     if ("att_style" in allvalue) {
@@ -274,6 +282,7 @@ export default function Home() {
   }
 
   async function comit2net(pc:any) {
+    console.log(pc)
     const res = await fetch('/api/coc_new', {
       method: "POST", // http请求方法，GET/POST/DELETE/PUT等
       headers: { // 请求头配置
@@ -293,14 +302,14 @@ export default function Home() {
     console.log(666)
     const pc = pcInfo
     // 技能和武器赋值
-    var sklist = []
+    var sklist:{[key:string]: number} = {}
     for (let i = 0; i < skill.length; i++) {
       if (skill[i].interPoint === 0 && skill[i].workPoint === 0 && !(skill[i].name in ["闪避", "母语"])) { }
-      else { sklist.push(skill[i]) }
+      else { sklist[skill[i].showName] = skill[i].defaultPoint + skill[i].workPoint + skill[i].interPoint }
     }
-    var wplist = []
+    var wplist:{[key:string]: number} = {}
     for (let i = 0; i < weaponUse.length; i++) {
-      wplist.push(weaponUse[i])
+      wplist[weaponUse[i]["名称"]] = weaponUse[i]
     }
     pc['skill'] = sklist
     pc['weapon'] = wplist
@@ -599,8 +608,8 @@ export default function Home() {
           <Form.Item name='att_style' label='属性方式'>
             <Radio.Group onChange={setAttFun}>
               <Space direction='vertical'>
-                <Radio value='gd'>购点()</Radio>
-                <Radio value='sj'>随机()</Radio>
+                <Radio value='gd'>购点({pointAtt})</Radio>
+                <Radio value='sj'>随机({attTime}次)</Radio>
               </Space>
             </Radio.Group>
           </Form.Item>
@@ -627,7 +636,7 @@ export default function Home() {
 
 
           {attlist.map((value, index) => (
-            <Form.Item key={index} name={value} label={value} rules={[{ required: true }]} hidden={attType !== 'gd'}>
+            <Form.Item key={index} name={value} label={value} rules={[{ required: true }]} hidden={attType !== 'gd'}  help={atthelp[index]}>
               <Input placeholder={value} />
             </Form.Item>))}
 
@@ -728,7 +737,7 @@ export default function Home() {
                                 <>
                                   <Grid.Item onClick={(skill[value.index].sub) ? (() => startSetSkillSubAny(skill[value.index].subList, value.index)) : (() => { })}><div className={styles.skilltext}>{skill[value.index].sub ? (skill[value.index].name + ":" + (skill[value.index].subName ? skill[value.index].subName : "未选择")) : skill[value.index].showName}({skill[value.index].defaultPoint})</div></Grid.Item>
                                   <Grid.Item><div className={styles.skillinput} >
-                                    {skill[value.index].levelup ?
+                                    {skill[value.index].levelup &&  skill[value.index].work?
                                       <Input type="number" max={100} min={0} value={skill[value.index].workPoint > 0 ? skill[value.index].workPoint.toString() : ""} onChange={val => setWorkPoint(val, value.index)} /> : <></>}
                                   </div></Grid.Item>
                                   <Grid.Item><div className={styles.skillinput} >
@@ -755,7 +764,7 @@ export default function Home() {
           onValuesChange={check_and_set_pcinfo}
         >
           <Form.Header>背景故事</Form.Header>
-          <Form.Item name='形象描述' label='形象描述' help='形象描述'>
+          <Form.Item name='形象描述' label='形象描述' help='英俊 迷人 邋遢 引人瞩目 疲倦 笨拙 娃娃脸 迟钝 书卷气 胖乎乎 毛发旺盛 优雅 脸色苍白 乐观 古板 强壮 衣着破旧 阴沉 晒黑 羞怯 苗条 矮壮 平凡 皱纹 机智 娇美 魁梧 笨拙 肌肉发达 虚弱'>
             <TextArea
               placeholder='形象描述'
               maxLength={100}
@@ -763,7 +772,7 @@ export default function Home() {
               showCount
             />
           </Form.Item>
-          <Form.Item name='思想信念' label='思想信念' help='思想信念'>
+          <Form.Item name='思想信念' label='思想信念' help='1. 你崇拜一位大能，会向其献上祈祷（如毗湿奴、耶稣、海尔·塞拉西一世）2. 没有宗教，人们一样能过的很好（如坚定的无神论者、人文主义者、世俗论者）3. 科学终将解释一切。选择一个感兴趣的领域（如进化论、低温学、空间探索）4. 相信命运（如因果报应、社会阶级、迷信）5. 协会或秘密结社的一员（如共济会、妇女协会、匿名者）6. 社会上的罪恶应该被根除。这里罪恶是指什么？（如毒品、暴力、种族偏见）7. 神秘学（如占星术、唯心论、塔罗牌）8. 政治（如保守派、社会主义者、自由主义者）9. “金钱就是力量，我会尽我所能。”（如贪婪、进取、无情）10. 活动家/积极分子（如女权主义、权利平等、工会权力）'>
             <TextArea
               placeholder='思想信念'
               maxLength={100}
@@ -771,7 +780,7 @@ export default function Home() {
               showCount
             />
           </Form.Item>
-          <Form.Item name='重要之人' label='重要之人' help='重要之人'>
+          <Form.Item name='重要之人' label='重要之人' help='1. 父母（如母亲、父亲、继母）2. 祖父母（如外祖母、祖父）3. 兄弟姐妹（如兄弟、异母或异父兄弟、继姐妹）4. 子女（儿子或女儿）5. 伴侣（如配偶、未婚夫、恋人）6. 教授你最高本职技能的人。确定技能并考虑那人是谁（如学校老师、收你当学徒的人、你的父亲）7. 儿时的朋友（如同学、邻居、想象出来的朋友）8. 一位名人。你将其视作偶像或英雄，而你们可能从未见过（如影星、政客、音乐家）9. 游戏中的调查员同伴。选择一个或随机指定。10. 游戏中的非玩家角色（NPC）。询问守秘人，让他为你选择一个。1. 你感激他们。他们是如何帮助你的？（如经济上的帮助、在困难时期保护你、帮你找到第一份工作）2. 他们教会了你一些东西。是什么？（如某项技能、如何去爱、如何做人）3. 他们赋予你生命的意义。是什么？（如你渴望成为他们那样的人、你追求和他们一起、你希望让他们快乐）4. 你亏欠他们，想要寻求谅解。你做了什么？（如你偷了他们的钱、你向警察告发了他们、在他们最绝望时你拒绝提供帮助）5. 你们有着共同的经历。是什么？（如你们一起度过了艰难岁月、一同长大、一起在战争中服役）6. 你希望向他们证明自己。怎么做？（如得到一份好工作、找到自己的好伴侣、接受更好的教育）7. 你崇拜他们（如他们的名声、美貌、工作）8. 你感到后悔（如你本应死在他们的位置上、你出于某种原因而与他们闹翻、你本有机会帮助他们）9. 你想证明自己比他们更好。他们的缺点是什么？（如懒惰、酗酒、缺乏爱心）10. 他们曾迫害过你，你想要报复。你因何责怪他们？（如爱人的死亡、破产、婚姻破裂）'>
             <TextArea
               placeholder='重要之人'
               maxLength={100}
@@ -779,7 +788,7 @@ export default function Home() {
               showCount
             />
           </Form.Item>
-          <Form.Item name='意义非凡之地' label='意义非凡之地' help='意义非凡之地'>
+          <Form.Item name='意义非凡之地' label='意义非凡之地' help='1. 你学习的地方（如学校、大学）2. 你的故乡（如农村、集镇、繁华的大城市）3. 你邂逅初恋的地方（如音乐会、度假地、防空洞）4. 供你静思的地方（如图书馆、属于你的乡间步道、钓场）5. 社交场所（ 如上流俱乐部、当地酒吧、叔叔家的宅子）6. 和你的思想与信念有关的地方（如城区教堂、麦加、巨石阵）7. 重要之人的坟墓。那是谁？（如父母、子女、恋人）8. 你的家（如乡间庄园、出租公寓、收养你长大的孤儿院）9. 你一生中最幸福的时候所在的地方（如初吻时的公园长椅、你的大学）10. 你的工作场所（如办公室、图书馆、银行）'>
             <TextArea
               placeholder='意义非凡之地'
               maxLength={100}
@@ -787,7 +796,7 @@ export default function Home() {
               showCount
             />
           </Form.Item>
-          <Form.Item name='宝贵之物' label='宝贵之物' help='宝贵之物'>
+          <Form.Item name='宝贵之物' label='宝贵之物' help='1. 与你最高的技能有关的物品（如昂贵的西装、假身份证明、铜指虎）2. 职业的必备物品（如医疗箱、汽车、开锁工具）3. 儿时的纪念品（如漫画、小折叠刀、幸运币）4. 逝者的遗物（如珠宝、钱包里的照片、信件）5. 重要之人送你的东西（如戒指、日记、地图）6. 你的收藏品。它是什么？（如车票、毛绒玩具、唱片）7. 你找到的一些东西，但你并不知道它是什么。你试图寻找答案（如：在橱子里发现的以未知语言写成的信，在父亲的遗物中找到的来路不明的古怪烟斗，在你的花园里挖到的古怪银球）8. 一件体育用品（如板球拍、签名球棒、钓竿）9. 一件武器（如配发的左轮手枪、你的旧猎枪、藏在靴子里的刀）10. 一只宠物（如狗、猫、龟）'>
             <TextArea
               placeholder='宝贵之物'
               maxLength={100}
@@ -795,7 +804,7 @@ export default function Home() {
               showCount
             />
           </Form.Item>
-          <Form.Item name='特质' label='特质' help='特质'>
+          <Form.Item name='特质' label='特质' help='1. 慷慨大方（如付小费时毫不吝啬、常向需要帮助的人伸出援手、乐善好施）2. 动物之友（如爱猫、在农场长大、爱马）3. 梦想家（如热爱幻想、富有远见、充满创造力）4. 享乐主义（如派对至上、嗜酒如命、“人生苦短，及时行乐”）5. 赌徒、敢于冒险（如扑克脸、勇于尝试、过着惊险的日子）6. 料理能手（如烤得一手好蛋糕、能为无米之炊、味觉盛宴）7. 万人迷（如温文尔雅、嗓音动听、迷人双眸）8. 义薄云天（如朋友的坚实后盾、一诺千金、愿为信念赴死）9. 名声在外（如国内最健谈的餐后演讲者、虔诚信徒、无所畏惧）10. 野心勃勃（如实现某一目的、成为老板、拥有一切）'>
             <TextArea
               placeholder='特质'
               maxLength={100}
@@ -828,7 +837,7 @@ export default function Home() {
           onValuesChange={check_and_set_pcinfo}
         >
           <Form.Header>武器</Form.Header>
-          <Form.Item name='武器' label='武器' help='武器' layout="vertical">
+          <Form.Item name='武器' label='武器' help='随身携带的武器，请综合考虑年代背景和职业是否有合理理由携带此武器' layout="vertical">
             <div className={styles.weaponCon}>
               <div className={styles.weaponOne}>
                 <div className={styles.weaponDel}></div><div className={styles.weaponName}>徒手</div><div className={styles.weaponValue}>1D3+DB</div>
@@ -849,7 +858,7 @@ export default function Home() {
             </div>
           </Form.Item>
           <Form.Header>物品与装备</Form.Header>
-          <Form.Item name='物品与装备' label='物品与装备' help='物品与装备'>
+          <Form.Item name='物品与装备' label='物品与装备' help='随身携带的物品，请考虑该物品是否会随身携带'>
             <TextArea
               placeholder='物品与装备'
               maxLength={100}
@@ -858,7 +867,7 @@ export default function Home() {
             />
           </Form.Item>
           <Form.Header>克苏鲁神话</Form.Header>
-          <Form.Item name='魔法物品与典籍' label='魔法物品与典籍' help='魔法物品与典籍'>
+          <Form.Item name='魔法物品与典籍' label='魔法物品与典籍' help='拥有的魔法物品与典籍，一般人没有'>
             <TextArea
               placeholder='魔法物品与典籍'
               maxLength={100}
@@ -866,7 +875,7 @@ export default function Home() {
               showCount
             />
           </Form.Item>
-          <Form.Item name='法术' label='法术' help='法术'>
+          <Form.Item name='法术' label='法术' help='掌握的法术，正常人一般不会学到法术'>
             <TextArea
               placeholder='法术'
               maxLength={100}
@@ -874,7 +883,7 @@ export default function Home() {
               showCount
             />
           </Form.Item>
-          <Form.Item name='第三类接触' label='第三类接触' help='第三类接触'>
+          <Form.Item name='第三类接触' label='第三类接触' help='第三类接触，一般人不会接触'>
             <TextArea
               placeholder='第三类接触'
               maxLength={100}

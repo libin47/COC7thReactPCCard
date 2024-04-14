@@ -22,7 +22,6 @@
   font-weight: bolder;
   background-color: lightgrey;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -95,15 +94,14 @@
 
 .weaponValue{
   width: 30%;
-}
-
+} 
 
 .cardbg {
   background-color: white;
   /* border: 1px solid #999999 ; */
   color: black;
-  padding: 16px;
-  margin: 16px;
+  padding: 8px;
+  margin: 8px;
   font-size: 18px;
 }
 
@@ -164,58 +162,16 @@
   font-size: 14px;
 }
 
-
-.exgriditem {
-  height: 64px;
-
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* background-color: rgb(196, 218, 225); */
-  
-  /* border-radius: 16px; */
-
-}
-.exgridone1 {
-  height: 60px;
-  width: 95%;
-  display: flex;
-  align-items: center;
-  border: 1px solid grey;
-  border-radius: 16px;
-}
-.exgridone {
-  width: 100%;
-}
-.exgridone > .title{
+.title{
   display: flex;
   justify-content: center;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 22px;
 }
 
-.exgridone > .text{
-  padding-top: 4px;
-  display: flex;
-justify-content: center;
-}  
 
 
 
-.upgriditem{
-  border: 1px solid grey;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-}
 
-.upgriditem > .upgridtitle{
-  width: 70%;
-  display: flex;
-  justify-content: center;
-}
 
 
 

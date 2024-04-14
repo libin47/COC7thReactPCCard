@@ -1,0 +1,58 @@
+.maintitle {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    font-size: 32px;
+    color: black;
+}
+
+.info {
+    background-color: antiquewhite;
+}
+.name {
+    font-size: 32px;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+.attribute{
+    background-color: beige;
+}
+.title {
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    padding-bottom: 16px;
+    padding-top: 8px;
+}
+.attributeText{
+    width: 100%;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+}
+.skill {
+    background-color: lightcyan;
+}
+.skillText {
+    width: 45%;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+}
+.story {
+    background-color: rgb(255, 225, 230);
+}
+.weapon{
+    background-color: whitesmoke;
+}
+.weapontext{
+    width: 100%;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+}
+.item {
+    background-color: honeydew;
+}

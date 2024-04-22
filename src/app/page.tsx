@@ -360,7 +360,9 @@ export default function Home() {
       obj[g[0]] = g[1];
     }
     const CONFIG = obj
-    get_user_data(CONFIG)
+    if(CONFIG["user"]){ get_user_data(CONFIG) }
+    else { setAdmin(true) }
+    
     get_config(CONFIG)
     setGroupid(CONFIG["group"])
     setUserid(CONFIG["user"])

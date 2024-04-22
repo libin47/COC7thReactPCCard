@@ -63,12 +63,12 @@ function dice(n: number, m: number) {
     return result
 }
 
-interface SkillModal {
+export interface SkillModal {
     name: string,
     showName: string,
     sub: boolean,
     subName?: string,
-    subList?: SkillModal[],
+    subList?: string[],
     work: boolean,
     defaultPoint: number,
     workPoint: number,
@@ -95,7 +95,7 @@ interface AttExModal {
     体格: number,
 }
 
-interface IModal {
+export interface IModal {
     sex: string,
     age: number,
     time: string,
@@ -111,7 +111,7 @@ interface SkillWorkModal {
     select_list?: { name: string }[]
 }
 
-interface InfoModal {
+export interface InfoModal {
     name: string,
     info: IModal,
     item: string,
@@ -133,7 +133,7 @@ interface InfoModal {
         法术: string,
         第三类接触: string,
     },
-    CR: {CR:string, 现金: number, 资产: number, 消费水平: number}
+    CR: {CR:string, 现金: string, 资产: string, 消费水平: string}
     weapon: { 名称: string, 伤害: string, 射程: string, 故障率: number, 次数: number, 装弹量: number, 贯穿: boolean }[]
 }
 
@@ -150,7 +150,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
         skill: [],
         skill_work: [],
         story: { 个人介绍: "", 形象描述: "", 思想信念: "", 重要之人: "", 意义非凡之地: "", 宝贵之物: "", 特质: "", 精神状况: "", 魔法物品与典籍: "", 法术: "", 第三类接触: "" },
-        CR: {CR:"赤贫", 现金: 0, 资产: 0, 消费水平: 0},
+        CR: {CR:"赤贫", 现金: "0", 资产: "0", 消费水平: "0"},
         weapon: []
     }
     const pointAtt = pointatt

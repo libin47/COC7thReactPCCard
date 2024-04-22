@@ -1,414 +1,70 @@
-.container{
-  height: 100vh;
-  /* background-color: #ffffff; */
-  display: flex;
-  justify-content: flex-start;
-  align-items: stretch;
-}
-.skillmain {
-  display: flex;
-}
-.skillCount {
-  height: 30px;
-  /* background-color: aquamarine; */
-  justify-content: center;
-  justify-self: center;
-  display: flex;
-  font-size: 18px;
-  line-height: 18px;
-}
-.skilltitle{
-  font-size: 14px;
-  font-weight: bolder;
-  background-color: lightgrey;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.bg{
+  position: fixed;
+  width: 100%;
   height: 100%;
-  width: 100%;
-  border: 1px solid grey;
-}
-.skilltext {
-  font-size: 16px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-align: center;
-  white-space: pre-line;
-}
-.skillinput {
-  border: 1px,line,#999999;
-  background-color: rgb(194, 194, 194);
-  margin-top: 4px;
-  margin-bottom: 4px;
-  height: 32px;
-  line-height: 32px;
-  font-size: 32px;
-  /* margin-right: 16px; */
-}
-
-.skillcant{
-  /* position: absolute; */
-  background-color: rgb(249, 249, 249);
-  width: 100%;
-  min-height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  color: darkred;
-}
-
-.griditem {
-  border: 0.5px solid darkgrey;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-}
-
-.weaponCon{
-  color:black;
-}
-
-.weaponOne {
-  display: flex;
-  font-size: 14px;
-  padding-top:8px;
-  padding-bottom:8px;
-  border-top: 1px solid #999999;
-  align-items: center;
-}
-.weaponDel {
-  width: 20%;
-  font-size: 8px;
-}
-.weaponName {
-  width:50%;
-  /* font-size:8px; */
-  --font-size: 14px;
-  background-color: lightgrey;
-  padding-left: 4px;
-  padding-right: 4px;
-  margin-right: 16px;
-}
-
-.weaponValue{
-  width: 30%;
-} 
-
-.cardbg {
-  background-color: white;
-  /* border: 1px solid #999999 ; */
-  color: black;
-  padding: 8px;
-  margin: 8px;
-  font-size: 18px;
-}
-
-.onecard{
-  border: 1px solid #999999;
-  padding: 8px;
-  margin-top: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-}
-
-.cardLeft {
-  max-width: 70%;
-}
-.cardRight {
-  min-width: 38%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.mainbg {
-  background-color: white;
-  position: absolute;
-  width: 100%;
-  min-height: 100%;
-  height: 100%;
-  padding: 16px;
-}
-
-.mainbg2 {
-  background-color: white;
-  position: absolute;
-  width: 100%;
-  min-height: 100%;
-  height: 100%;
-  padding: 16px;
-  z-index: 99;
-}
-.cardbg2{
-  background-color: white;
-  color: black;
-  padding: 4px;
-  margin: 4px;
-  font-size: 18px;
-}
-
-
-.newtemtext {
-  color: darkblue;
-  width: 100%;
-  justify-items: center;
-  justify-content: center;
-  display: flex;
-  padding-top: 8px;
-  font-size: 14px;
-}
-
-.title{
-  display: flex;
-  justify-content: center;
-  font-size: 22px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
-}
-
-.description {
-  display: inherit;
-  justify-content: inherit;
-  align-items: inherit;
-  font-size: 0.85rem;
-  max-width: var(--max-width);
-  width: 100%;
-  z-index: 2;
-  font-family: var(--font-mono);
-}
-
-.description a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.description p {
-  position: relative;
-  margin: 0;
-  padding: 1rem;
-  background-color: rgba(var(--callout-rgb), 0.5);
-  border: 1px solid rgba(var(--callout-border-rgb), 0.3);
-  border-radius: var(--border-radius);
-}
-
-.code {
-  font-weight: 700;
-  font-family: var(--font-mono);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(25%, auto));
-  max-width: 100%;
-  width: var(--max-width);
-}
-
-.card {
-  padding: 1rem 1.2rem;
-  border-radius: var(--border-radius);
-  background: rgba(var(--card-rgb), 0);
-  border: 1px solid rgba(var(--card-border-rgb), 0);
-  transition: background 200ms, border 200ms;
-}
-
-.card span {
-  display: inline-block;
-  transition: transform 200ms;
-}
-
-.card h2 {
-  font-weight: 600;
-  margin-bottom: 0.7rem;
-}
-
-.card p {
-  margin: 0;
-  opacity: 0.6;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  max-width: 30ch;
-  text-wrap: balance;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  padding: 4rem 0;
-}
-
-.center::before {
-  background: var(--secondary-glow);
-  border-radius: 50%;
-  width: 480px;
-  height: 360px;
-  margin-left: -400px;
-}
-
-.center::after {
-  background: var(--primary-glow);
-  width: 240px;
-  height: 180px;
+  background-color: #fff;
   z-index: -1;
 }
 
-.center::before,
-.center::after {
-  content: "";
-  left: 50%;
-  position: absolute;
-  filter: blur(45px);
-  transform: translateZ(0);
+.baseinfo{
+  margin: 16px;
+  padding: 16px;
+  font-weight: bolder;
+}
+.baseinfo > .name {
+  font-size: 25px;
+  padding-bottom: 16px;
 }
 
-.logo {
-  position: relative;
-}
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  .card:hover {
-    background: rgba(var(--card-rgb), 0.1);
-    border: 1px solid rgba(var(--card-border-rgb), 0.15);
-  }
-
-  .card:hover span {
-    transform: translateX(4px);
-  }
+.basegrid {
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
-@media (prefers-reduced-motion) {
-  .card:hover span {
-    transform: none;
-  }
+.attinfo{
+  border: 1px solid grey;
+  border-radius: 16px;
+  margin: 16px;
+  padding: 16px;
 }
 
-/* Mobile */
-@media (max-width: 700px) {
-  .content {
-    padding: 4rem;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-    margin-bottom: 120px;
-    max-width: 320px;
-    text-align: center;
-  }
-
-  .card {
-    padding: 1rem 2.5rem;
-  }
-
-  .card h2 {
-    margin-bottom: 0.5rem;
-  }
-
-  .center {
-    padding: 8rem 0 6rem;
-  }
-
-  .center::before {
-    transform: none;
-    height: 300px;
-  }
-
-  .description {
-    font-size: 0.8rem;
-  }
-
-  .description a {
-    padding: 1rem;
-  }
-
-  .description p,
-  .description div {
-    display: flex;
-    justify-content: center;
-    position: fixed;
-    width: 100%;
-  }
-
-  .description p {
-    align-items: center;
-    inset: 0 0 auto;
-    padding: 2rem 1rem 1.4rem;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.25);
-    background: linear-gradient(
-      to bottom,
-      rgba(var(--background-start-rgb), 1),
-      rgba(var(--callout-rgb), 0.5)
-    );
-    background-clip: padding-box;
-    backdrop-filter: blur(24px);
-  }
-
-  .description div {
-    align-items: flex-end;
-    pointer-events: none;
-    inset: auto 0 0;
-    padding: 2rem;
-    height: 200px;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(var(--background-end-rgb)) 40%
-    );
-    z-index: 1;
-  }
+.attinfo > .atttitle{
+  font-size: 18px;
+  padding-bottom: 8px;
+  font-weight: bolder;
 }
 
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
-  .grid {
-    grid-template-columns: repeat(2, 50%);
-  }
+.attbase {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  padding: 8px 16px 8px 16px
+}
+.attprogress{
+  padding-left:16px;
+  padding-right:16px;
+  padding-bottom: 16px;
+}
+.attgrid{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px 8px 16px;
+  margin: 4px;
+  font-size: 14px;
+  border: 1px solid grey;
 }
 
-@media (prefers-color-scheme: dark) {
-  .vercelLogo {
-    filter: invert(1);
-  }
 
-  .logo {
-    filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
-  }
+
+.storytitle{
+  font-size: 18px;
+  padding-bottom: 4px;
+  padding-top: 8px;
 }
-
-@keyframes rotate {
-  from {
-    transform: rotate(360deg);
-  }
-  to {
-    transform: rotate(0deg);
-  }
+.storytext{
+  background-color: #FFF;
+  padding-bottom: 8px;
+  border-bottom: 1px solid grey;
 }

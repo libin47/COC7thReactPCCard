@@ -479,12 +479,23 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
 
             } else {
                 var skillnew = skill
+                var index_old = skillwork[pickleIndex].index
+                if (index_old>=0){
+                    skillnew[index_old].work = false
+                    skillnew[index_old].workPoint = 0
+                    var pointuse_ = [0, 0]
+                    for (var i = 0; i < skillnew.length; i++) {
+                        pointuse_[0] += skillnew[i].workPoint
+                        pointuse_[1] += skillnew[i].interPoint
+                    }
+                    setPointSkillUse(pointuse_)
+                }
                 var skillworknew = skillwork
                 skillnew[index].work = true
                 if ("sub_name" in skillnew[index]) {
-                    skillworknew[pickleIndex] = { index: index, "name": skillnew[index].name, "sub_name": skillnew[index].subName, "showname": skillnew[index].showName }
+                    skillworknew[pickleIndex] = { index: index, "name": skillnew[index].name, "sub_name": skillnew[index].subName, "showname": skillnew[index].showName, "select_list": skillworknew[pickleIndex].select_list }
                 } else {
-                    skillworknew[pickleIndex] = { index: index, "name": skillnew[index].name, "showname": skillnew[index].showName }
+                    skillworknew[pickleIndex] = { index: index, "name": skillnew[index].name, "showname": skillnew[index].showName, "select_list": skillworknew[pickleIndex].select_list}
                 }
                 setSkill(skillnew)
                 setSkillwork(skillworknew)
@@ -1228,11 +1239,12 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                                                         <>
                                                                             <Grid.Item
                                                                                 className={styles.griditem}
-                                                                                onClick={(skill[itemwork["index"]].sub) ? (() => startSetSkillSubAny(skill[itemwork["index"]].subList, itemwork["index"])) : (() => { })}
-                                                                                style={{ backgroundColor: "rgba(250,150,10," + ((skill[itemwork["index"]].workPoint + skill[itemwork["index"]].defaultPoint + skill[itemwork["index"]].interPoint) / 100).toString() + ")" }}
+                                                                                onClick={("select_list" in itemwork)?() => startSetSkillSub(itemwork, index):(skill[itemwork["index"]].sub) ? (() => startSetSkillSubAny(skill[itemwork["index"]].subList, itemwork["index"])) :()=>{}}
+                                                                                // onClick={(skill[itemwork["index"]].sub) ? (() => startSetSkillSubAny(skill[itemwork["index"]].subList, itemwork["index"])) : (() => { })}
+                                                                                style={{color:("select_list" in itemwork)?"blue":(skill[itemwork.index].sub && !skill[itemwork.index].subName) ? "darkblue" : "black", backgroundColor: "rgba(250,150,10," + ((skill[itemwork["index"]].workPoint + skill[itemwork["index"]].defaultPoint + skill[itemwork["index"]].interPoint) / 100).toString() + ")" }}
                                                                                 key={index + "1"}
                                                                             >
-                                                                                <div className={styles.skilltext} style={{ "color": (skill[itemwork.index].sub && !skill[itemwork.index].subName) ? "darkblue" : "black" }}>
+                                                                                <div className={styles.skilltext}>
                                                                                     {skill[itemwork["index"]].sub ? (skill[itemwork["index"]].name + ":" + (skill[itemwork["index"]].subName ? skill[itemwork["index"]].subName : "未选择")) :
                                                                                         skill[itemwork["index"]].showName}
                                                                                     {skill[itemwork.index].ensurePoint > 0 ? "☘️" + skill[itemwork.index].ensurePoint : ""}

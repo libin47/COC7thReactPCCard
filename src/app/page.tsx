@@ -71,24 +71,42 @@ async function update2net(pc: any, pcid: string) {
   return rj.ok
 }
 
+async function link2net(groupid: string, userid: string, pcid: string) {
+  const res = await fetch(api_url + '/coc_group_link_pc', {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=UTF-8"
+    },
+    body: JSON.stringify({ "card_id": pcid,"user": userid, "group": groupid }),
+  })
+  const rj = await res.json()
+  return rj.ok
+}
+
 function ImportSelf({ group, user, pcid, data }: { group: string, user: string, pcid: string, data: { [key: string]: any }[] }) {
   const userData = data
+  const linkFun = function (index: number) {
+    const data = userData[index]
+    link2net(group, user, data["_id"]).then(res => {
+      if (res) {
+        Modal.alert({ content: '已成功关联！', onConfirm() { window.location.reload() }, })
+      }
+    })
+  }
   // 将其他群里的数据导入
   const daoruFun = function (index: number) {
     const data = userData[index]
-    console.log("import self:", pcid)
-    console.log("import data:", data)
     // 已有数据的更新，没有数据的新建
     if (pcid) {
       update2net(data, pcid).then(res => {
         if (res) {
-          Modal.alert({ content: '已成功提交！', onConfirm() { window.location.reload() }, })
+          Modal.alert({ content: '复制并覆盖当前群角色卡！', onConfirm() { window.location.reload() }, })
         }
       })
     } else {
       create2net(data, user, group).then(res => {
         if (res) {
-          Modal.alert({ content: '已成功提交！', onConfirm() { window.location.reload() }, })
+          Modal.alert({ content: '复制并新建到本群角色卡！', onConfirm() { window.location.reload() }, })
         }
       })
     }
@@ -102,12 +120,13 @@ function ImportSelf({ group, user, pcid, data }: { group: string, user: string, 
         userData.map((item: any, value: number) => (
           <div className={styles.onecard} key={value} style={{ backgroundColor: item.group ? "lightgoldenrodyellow" : "white" }}>
             <div className={styles.cardLeft}>
-              {item.group ? <div>来自群：{item["group"]}</div> : <></>}
+              {item.group ? <div>来自群：{item["group"].map((item:any)=>(item))}</div> : <></>}
               <div>[{item.info["time"] ? item.info["time"] : "年代未知"} / {item.info["wherelive"] ? item.info["wherelive"] : "居住地未知"}]</div>
               <div>{item.info["sex"] === "女" ? "♀️" : "♂️"}{item["name"]} - {item["职业"]}</div>
             </div>
             <div className={styles.cardRight}>
-              <Button color='success' onClick={() => daoruFun(value)}>导入</Button>
+            <Button color="primary" onClick={() => linkFun(value)}>关联</Button>
+              <Button color='success' onClick={() => daoruFun(value)}>复制</Button>
             </div>
           </div>
         ))

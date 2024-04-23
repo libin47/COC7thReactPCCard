@@ -133,7 +133,7 @@ export interface InfoModal {
         法术: string,
         第三类接触: string,
     },
-    CR: {CR:string, 现金: string, 资产: string, 消费水平: string}
+    CR: { CR: string, 现金: string, 资产: string, 消费水平: string }
     weapon: { 名称: string, 伤害: string, 射程: string, 故障率: number, 次数: number, 装弹量: number, 贯穿: boolean }[]
 }
 
@@ -150,7 +150,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
         skill: [],
         skill_work: [],
         story: { 个人介绍: "", 形象描述: "", 思想信念: "", 重要之人: "", 意义非凡之地: "", 宝贵之物: "", 特质: "", 精神状况: "", 魔法物品与典籍: "", 法术: "", 第三类接触: "" },
-        CR: {CR:"赤贫", 现金: "0", 资产: "0", 消费水平: "0"},
+        CR: { CR: "赤贫", 现金: "0", 资产: "0", 消费水平: "0" },
         weapon: []
     }
     const pointAtt = pointatt
@@ -158,7 +158,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
     const [luck, setLuck] = useState<number>(0) //幸运
     const [luckTime, setLuckTime] = useState<number>(5) //幸运随机次数
 
-    const [popSwitch, setPopSwitch] = useState(false) 
+    const [popSwitch, setPopSwitch] = useState(false)
 
     const [attTime, setAttTime] = useState<number>(atttime) //属性随机次数
     const [attDice, setAttDice] = useState<number[][]>([])  //属性随机结果
@@ -229,7 +229,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                 return errortxt
             }
         }
-        if(pc.attribute.体型 + pc.attribute.体质 + pc.attribute.力量 + pc.attribute.外貌 + pc.attribute.智力 +pc.attribute.意志 + pc.attribute.敏捷 + pc.attribute.教育 > pointAtt && form_att.getFieldValue("att_style")==="gd"){
+        if (pc.attribute.体型 + pc.attribute.体质 + pc.attribute.力量 + pc.attribute.外貌 + pc.attribute.智力 + pc.attribute.意志 + pc.attribute.敏捷 + pc.attribute.教育 > pointAtt && form_att.getFieldValue("att_style") === "gd") {
             errortxt = "属性超额使用"
             return errortxt
         }
@@ -580,7 +580,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
         } else {
             skill_bak[index].workPoint = 0
         }
-        if(skill_bak[index].name === "信用评级"){
+        if (skill_bak[index].name === "信用评级") {
             get_money_status(+val)
         }
         var pointuse_ = [0, 0]
@@ -621,8 +621,8 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
 
 
     // 计算衍生属性
-    const cal_value = function (pcnew: AttModal, Cocskill:number=0) {
-        var attex:AttExModal = {HP:0,HP_MAX:0,MP:0,MP_MAX:0,SAN:0,SAN_MAX:0,体格:0,DB:"0", MOV:0}
+    const cal_value = function (pcnew: AttModal, Cocskill: number = 0) {
+        var attex: AttExModal = { HP: 0, HP_MAX: 0, MP: 0, MP_MAX: 0, SAN: 0, SAN_MAX: 0, 体格: 0, DB: "0", MOV: 0 }
         attex["HP_MAX"] = Math.floor((pcnew["体质"] + pcnew["体型"]) / 10)
         attex["HP"] = attex["HP_MAX"]
         attex["MP_MAX"] = Math.floor(pcnew["意志"] / 5)
@@ -668,7 +668,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
 
     // 数据从列表到INFO
     const form2info = function () {
-        const pc: InfoModal = {...pcInfo}
+        const pc: InfoModal = { ...pcInfo }
         // 第一页
         const att_ = form_att.getFieldsValue(true)
         attlist.map((item, index) => (
@@ -677,32 +677,32 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
         pc.attribute.幸运 = +att_.幸运
         // 第二页
         const info_ = form_info.getFieldsValue(true)
-        pc.name = info_.name?info_.name:""
-        pc.职业 = info_.职业?info_.职业:""
-        pc.info.sex = info_["sex"]?info_["sex"]:""
-        pc.info.age = info_["age"]?info_["age"]:0
-        pc.info.whereborn = info_["whereborn"]?info_["whereborn"]:""
-        pc.info.wherelive = info_["wherelive"]?info_["wherelive"]:""
-        pc.info.time = info_["time"]?info_["time"]:""
+        pc.name = info_.name ? info_.name : ""
+        pc.职业 = info_.职业 ? info_.职业 : ""
+        pc.info.sex = info_["sex"] ? info_["sex"] : ""
+        pc.info.age = info_["age"] ? info_["age"] : 0
+        pc.info.whereborn = info_["whereborn"] ? info_["whereborn"] : ""
+        pc.info.wherelive = info_["wherelive"] ? info_["wherelive"] : ""
+        pc.info.time = info_["time"] ? info_["time"] : ""
         // 第三页-skill
         pc.skill = skill
         pc.skill_work = skillwork
         // 第四页-story
         const story_ = form_bj.getFieldsValue(true)
-        pc.story.个人介绍 = story_.个人介绍?story_.个人介绍:""
-        pc.story.宝贵之物 = story_.宝贵之物?story_.宝贵之物:""
-        pc.story.形象描述 = story_.形象描述?story_.形象描述:""
-        pc.story.思想信念 = story_.思想信念?story_.思想信念:""
-        pc.story.意义非凡之地 = story_.意义非凡之地?story_.意义非凡之地:""
-        pc.story.法术 = story_.法术?story_.法术:""
-        pc.story.第三类接触 = story_.第三类接触?story_.第三类接触:""
-        pc.story.精神状况 = story_.精神状况?story_.精神状况:""
-        pc.story.重要之人 = story_.重要之人?story_.重要之人:""
-        pc.story.魔法物品与典籍 = story_.魔法物品与典籍?story_.魔法物品与典籍:""
-        pc.story.特质 = story_.特质?story_.特质:""
+        pc.story.个人介绍 = story_.个人介绍 ? story_.个人介绍 : ""
+        pc.story.宝贵之物 = story_.宝贵之物 ? story_.宝贵之物 : ""
+        pc.story.形象描述 = story_.形象描述 ? story_.形象描述 : ""
+        pc.story.思想信念 = story_.思想信念 ? story_.思想信念 : ""
+        pc.story.意义非凡之地 = story_.意义非凡之地 ? story_.意义非凡之地 : ""
+        pc.story.法术 = story_.法术 ? story_.法术 : ""
+        pc.story.第三类接触 = story_.第三类接触 ? story_.第三类接触 : ""
+        pc.story.精神状况 = story_.精神状况 ? story_.精神状况 : ""
+        pc.story.重要之人 = story_.重要之人 ? story_.重要之人 : ""
+        pc.story.魔法物品与典籍 = story_.魔法物品与典籍 ? story_.魔法物品与典籍 : ""
+        pc.story.特质 = story_.特质 ? story_.特质 : ""
         // 第五页-武器
         pc.weapon = weaponUse
-        pc.item = story_.item?story_.item:""
+        pc.item = story_.item ? story_.item : ""
         pc.CR.CR = story_.CR
         pc.CR.消费水平 = story_.消费水平
         pc.CR.现金 = story_.现金
@@ -805,7 +805,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                             <Grid.Item
                                 className={styles.griditem} onClick={(skill[value.index].sub) ? (() => startSetSkillSubAny(skill[value.index].subList, value.index)) : (() => { })}
                                 style={{ backgroundColor: "rgba(250,150,10," + ((skill[value.index].workPoint + skill[value.index].defaultPoint + skill[value.index].interPoint) / 100).toString() + ")" }}
-                                key = {index+"1"}
+                                key={index + "1"}
                             >
 
                                 <div className={styles.skilltext} style={{ "color": (skill[value.index].sub && !skill[value.index].subName) ? "darkblue" : "black" }}>
@@ -822,7 +822,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
 
                             <Grid.Item className={styles.griditem}
                                 style={{ backgroundColor: "rgba(250,150,10," + (skill[value["index"]].workPoint / (100 - skill[value["index"]].defaultPoint)).toString() + ")" }}
-                                key = {index+"2"}
+                                key={index + "2"}
                             ><div className={styles.skillinput} >
                                     {skill[value.index].levelup && skill[value.index].work ?
                                         <Stepper step={5} defaultValue={0} min={0} max={100 - skill[value.index].defaultPoint - skill[value.index].interPoint} value={skill[value.index].workPoint} onChange={val => setWorkPoint(val, value.index)} />
@@ -830,7 +830,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                 </div></Grid.Item>
                             <Grid.Item className={styles.griditem}
                                 style={{ backgroundColor: "rgba(250,150,10," + (skill[value["index"]].interPoint / (100 - skill[value["index"]].defaultPoint)).toString() + ")" }}
-                                key = {index+"3"}
+                                key={index + "3"}
                             ><div className={styles.skillinput} >
                                     {skill[value.index].levelup && skill[value.index].name !== "信用评级" ?
                                         <Stepper step={5} defaultValue={0} min={0} max={100 - skill[value.index].defaultPoint - skill[value.index].workPoint} value={skill[value.index].interPoint} onChange={val => setIntePoint(val, value.index)} />
@@ -869,11 +869,11 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
         return result
     }
     // 获取经济状况
-    const get_money_status = function(value=-1){
+    const get_money_status = function (value = -1) {
         var result = 0
-        if(value<0){
-            for(var i=0;i<skill.length;i++){
-                if(skill[i].name==="信用评级"){
+        if (value < 0) {
+            for (var i = 0; i < skill.length; i++) {
+                if (skill[i].name === "信用评级") {
                     result = skill[i].defaultPoint + skill[i].workPoint + skill[i].ensurePoint
                 }
             }
@@ -881,58 +881,58 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
             result = value
         }
         var 生活水平 = ""
-        if(result === 0){ 生活水平="赤贫"}
-        else if(result<10){ 生活水平="贫穷"}
-        else if(result<50){ 生活水平="标准"}
-        else if(result<90){ 生活水平="小康"}
-        else if(result<99){ 生活水平="富裕"}
-        else{生活水平="豪富"}
+        if (result === 0) { 生活水平 = "赤贫" }
+        else if (result < 10) { 生活水平 = "贫穷" }
+        else if (result < 50) { 生活水平 = "标准" }
+        else if (result < 90) { 生活水平 = "小康" }
+        else if (result < 99) { 生活水平 = "富裕" }
+        else { 生活水平 = "豪富" }
 
-        const time:string = form_info.getFieldValue("time")
+        const time: string = form_info.getFieldValue("time")
 
         form_bj.setFieldsValue({
-            CR: 生活水平, 
-            资产:"$" + CR_default[time][生活水平]["资产"] * result,
-            现金:"$" + CR_default[time][生活水平]["现金"] * result,
-            消费水平:"$" + CR_default[time][生活水平]["消费水平"],
+            CR: 生活水平,
+            资产: "$" + CR_default[time][生活水平]["资产"] * result,
+            现金: "$" + CR_default[time][生活水平]["现金"] * result,
+            消费水平: "$" + CR_default[time][生活水平]["消费水平"],
         })
-        
-        return {CR: result, 生活水平: 生活水平}
+
+        return { CR: result, 生活水平: 生活水平 }
     }
 
     // 技能成长
-    const get_skilllist_ai = function(){
+    const get_skilllist_ai = function () {
         const skill_select: number[] = []
-        if(activeKey === "本职"){
-            for(let i =0; i<skillwork.length; i++){
-                if(skillwork[i].index>=0){
+        if (activeKey === "本职") {
+            for (let i = 0; i < skillwork.length; i++) {
+                if (skillwork[i].index >= 0) {
                     skill_select.push(skillwork[i].index)
                 }
             }
-        } else if (activeKey==="其他"){
-            for(let i =0; i<skill.length; i++){
-                if(skill_option[skill_option.length-1].sub.indexOf(skill[i].name)>=0 || skill[i].self ){
+        } else if (activeKey === "其他") {
+            for (let i = 0; i < skill.length; i++) {
+                if (skill_option[skill_option.length - 1].sub.indexOf(skill[i].name) >= 0 || skill[i].self) {
                     skill_select.push(i)
                 }
             }
-        } else if (activeKey==="已点技能"){
-            for(let i =0; i<skill.length; i++){
-                if(skill[i].interPoint>0||skill[i].workPoint>0 ){
+        } else if (activeKey === "已点技能") {
+            for (let i = 0; i < skill.length; i++) {
+                if (skill[i].interPoint > 0 || skill[i].workPoint > 0) {
                     skill_select.push(i)
                 }
             }
         } else {
             var index = -1
-            for(let i =0; i<skill_option.length; i++){
-                if(skill_option[i].name == activeKey){
+            for (let i = 0; i < skill_option.length; i++) {
+                if (skill_option[i].name == activeKey) {
                     index = i
                     break
                 }
             }
-            if(index>=0){
+            if (index >= 0) {
                 const skop = skill_option[index]
-                for(let j =0; j<skill.length; j++){
-                    if(skop.sub.indexOf(skill[j].name) >=0 ){
+                for (let j = 0; j < skill.length; j++) {
+                    if (skop.sub.indexOf(skill[j].name) >= 0) {
                         skill_select.push(j)
                     }
                 }
@@ -941,7 +941,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
         return skill_select
     }
 
-    const setEnsureSkill = (index:number, v:string)=>{
+    const setEnsureSkill = (index: number, v: string) => {
         const sk = skill
         sk[index].ensurePoint = +v
         setSkill(sk)
@@ -949,31 +949,31 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
 
     function PopSkillUp() {
         const ssIndex = get_skilllist_ai()
-        
-        return (<>
-        <Collapse>
-          <Collapse.Panel key='1' title='技能成长'>
-          技能成长一般发生在游戏过程中，成功使用技能后根据主持人裁定可以选择进行成长。
-          </Collapse.Panel>
-          </Collapse>
-        <div>
-        <Grid columns={2}>
-        {                        
-            ssIndex.map((item) => (
-                <Grid.Item className={styles.upgriditem} key = {item}>
-                    <div className={styles.upgridtitle}>{skill[item].showName}({skill[item].defaultPoint})</div>
-                    <Input 
-                    type="number"
-                    style={{backgroundColor: "lightgray", width: "48px"}} 
-                    defaultValue={skill[item].ensurePoint>0?skill[item].ensurePoint.toString():""}
-                    onChange={(v)=>{setEnsureSkill(item, v)}}
-                    />
 
-                </Grid.Item>
-            ))
-        }
-        </Grid>
-        </div>
+        return (<>
+            <Collapse>
+                <Collapse.Panel key='1' title='技能成长'>
+                    技能成长一般发生在游戏过程中，成功使用技能后根据主持人裁定可以选择进行成长。
+                </Collapse.Panel>
+            </Collapse>
+            <div>
+                <Grid columns={2}>
+                    {
+                        ssIndex.map((item) => (
+                            <Grid.Item className={styles.upgriditem} key={item}>
+                                <div className={styles.upgridtitle}>{skill[item].showName}({skill[item].defaultPoint})</div>
+                                <Input
+                                    type="number"
+                                    style={{ backgroundColor: "lightgray", width: "48px" }}
+                                    defaultValue={skill[item].ensurePoint > 0 ? skill[item].ensurePoint.toString() : ""}
+                                    onChange={(v) => { setEnsureSkill(item, v) }}
+                                />
+
+                            </Grid.Item>
+                        ))
+                    }
+                </Grid>
+            </div>
         </>)
     }
     return (
@@ -993,17 +993,17 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
             />
 
             <Popup
-              visible={popSwitch}
-              
-              onMaskClick={() => {
-                setPopSwitch(false)
-              }}
-              onClose={() => {
-                setPopSwitch(false)
-              }}
-              destroyOnClose={true}
+                visible={popSwitch}
+
+                onMaskClick={() => {
+                    setPopSwitch(false)
+                }}
+                onClose={() => {
+                    setPopSwitch(false)
+                }}
+                destroyOnClose={true}
             >
-              <PopSkillUp/>
+                <PopSkillUp />
             </Popup>
 
 
@@ -1028,22 +1028,22 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                         {
                             attType == 'gd' ?
                                 <Form.Header>
-                                    <text style={{color: pcInfo.attribute.体型 + pcInfo.attribute.体质 + pcInfo.attribute.力量 + pcInfo.attribute.外貌 + pcInfo.attribute.意志 + pcInfo.attribute.敏捷 + pcInfo.attribute.教育 + pcInfo.attribute.智力> pointAtt?"red":""}}>
-                                        属性点总值:{pcInfo.attribute.体型 + pcInfo.attribute.体质 + pcInfo.attribute.力量 + pcInfo.attribute.外貌 + pcInfo.attribute.意志 + pcInfo.attribute.敏捷 + pcInfo.attribute.教育 + pcInfo.attribute.智力} / {pointAtt} 
-                                        </text>
+                                    <text style={{ color: pcInfo.attribute.体型 + pcInfo.attribute.体质 + pcInfo.attribute.力量 + pcInfo.attribute.外貌 + pcInfo.attribute.意志 + pcInfo.attribute.敏捷 + pcInfo.attribute.教育 + pcInfo.attribute.智力 > pointAtt ? "red" : "" }}>
+                                        属性点总值:{pcInfo.attribute.体型 + pcInfo.attribute.体质 + pcInfo.attribute.力量 + pcInfo.attribute.外貌 + pcInfo.attribute.意志 + pcInfo.attribute.敏捷 + pcInfo.attribute.教育 + pcInfo.attribute.智力} / {pointAtt}
+                                    </text>
                                 </Form.Header>
                                 :
                                 <Form.Header>请选择你想要的属性</Form.Header>
                         }
 
-                        <Form.Item name='att' label='属性选择' hidden={attType === 'gd'}  layout='vertical' >
+                        <Form.Item name='att' label='属性选择' hidden={attType === 'gd'} layout='vertical' >
                             <Radio.Group>
                                 <Space direction='vertical'>
                                     {
                                         attDice.map((value, index) => (
                                             <Radio value={index} key={index}>
-                                                【属性总值：{value.reduce((accumulator, current) => { return accumulator + current; }, 0)}】<br/>
-                                                💪力量{value[0]} ❤️体质{value[1]} 🐇敏捷{value[2]} 🌼外貌{value[3]}<br/>
+                                                【属性总值：{value.reduce((accumulator, current) => { return accumulator + current; }, 0)}】<br />
+                                                💪力量{value[0]} ❤️体质{value[1]} 🐇敏捷{value[2]} 🌼外貌{value[3]}<br />
                                                 🌞意志{value[4]} 👩‍👦体型{value[5]} 🎓教育{value[6]} 🧠智力{value[7]}
                                             </Radio>))
                                     }
@@ -1067,50 +1067,50 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                         <Grid columns={3} style={{ backgroundColor: "#FFFFFF" }}>
                             <Grid.Item className={styles.exgriditem}>
                                 <div className={styles.exgridone1}>
-                                <div className={styles.exgridone}>
-                                    <div className={styles.title}>HP</div>
-                                    <div className={styles.text}>{pcInfo.attex.HP} / {pcInfo.attex.HP_MAX}</div>
-                                </div>
-                                </div>
-                            </Grid.Item>
-                            <Grid.Item className={styles.exgriditem}>
-                                <div className={styles.exgridone1}>
-                                <div className={styles.exgridone}>
-                                    <div className={styles.title}>MP</div>
-                                    <div className={styles.text}>{pcInfo.attex.MP} / {pcInfo.attex.MP_MAX}</div>
-                                </div>
+                                    <div className={styles.exgridone}>
+                                        <div className={styles.title}>HP</div>
+                                        <div className={styles.text}>{pcInfo.attex.HP} / {pcInfo.attex.HP_MAX}</div>
+                                    </div>
                                 </div>
                             </Grid.Item>
                             <Grid.Item className={styles.exgriditem}>
                                 <div className={styles.exgridone1}>
-                                <div className={styles.exgridone}>
-                                    <div className={styles.title}>SAN</div>
-                                    <div className={styles.text}>{pcInfo.attex.SAN} / {pcInfo.attex.SAN_MAX}</div>
-                                </div>
-                                </div>
-                            </Grid.Item>
-                            <Grid.Item className={styles.exgriditem}>
-                                <div className={styles.exgridone1}>
-                                <div className={styles.exgridone}>
-                                    <div className={styles.title}>移动速度</div>
-                                    <div className={styles.text}>{pcInfo.attex.MOV}</div>
-                                </div>
+                                    <div className={styles.exgridone}>
+                                        <div className={styles.title}>MP</div>
+                                        <div className={styles.text}>{pcInfo.attex.MP} / {pcInfo.attex.MP_MAX}</div>
+                                    </div>
                                 </div>
                             </Grid.Item>
                             <Grid.Item className={styles.exgriditem}>
                                 <div className={styles.exgridone1}>
-                                <div className={styles.exgridone}>
-                                    <div className={styles.title}>伤害加值</div>
-                                    <div className={styles.text}>{pcInfo.attex.DB}</div>
-                                </div>
+                                    <div className={styles.exgridone}>
+                                        <div className={styles.title}>SAN</div>
+                                        <div className={styles.text}>{pcInfo.attex.SAN} / {pcInfo.attex.SAN_MAX}</div>
+                                    </div>
                                 </div>
                             </Grid.Item>
                             <Grid.Item className={styles.exgriditem}>
                                 <div className={styles.exgridone1}>
-                                <div className={styles.exgridone}>
-                                    <div className={styles.title}>体格</div>
-                                    <div className={styles.text}>{pcInfo.attex.体格}</div>
+                                    <div className={styles.exgridone}>
+                                        <div className={styles.title}>移动速度</div>
+                                        <div className={styles.text}>{pcInfo.attex.MOV}</div>
+                                    </div>
                                 </div>
+                            </Grid.Item>
+                            <Grid.Item className={styles.exgriditem}>
+                                <div className={styles.exgridone1}>
+                                    <div className={styles.exgridone}>
+                                        <div className={styles.title}>伤害加值</div>
+                                        <div className={styles.text}>{pcInfo.attex.DB}</div>
+                                    </div>
+                                </div>
+                            </Grid.Item>
+                            <Grid.Item className={styles.exgriditem}>
+                                <div className={styles.exgridone1}>
+                                    <div className={styles.exgridone}>
+                                        <div className={styles.title}>体格</div>
+                                        <div className={styles.text}>{pcInfo.attex.体格}</div>
+                                    </div>
                                 </div>
                             </Grid.Item>
                         </Grid>
@@ -1128,7 +1128,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                         form={form_info}
                         layout='horizontal'
                         initialValues={{ ...{ "sex": "男", "time": "1920s" } }}
-                        // initialValues={{ ...{ "name": pcInfo.name, "职业": pcInfo.职业 }, ...pcInfo.info }}
+                    // initialValues={{ ...{ "name": pcInfo.name, "职业": pcInfo.职业 }, ...pcInfo.info }}
                     >
                         <Form.Header>角色信息</Form.Header>
                         <Form.Item name='name' label='姓名' rules={[{ required: true, message: '姓名不能为空' }]}>
@@ -1204,21 +1204,21 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                                     <Grid columns={3} style={{ backgroundColor: "#EEEFFF" }}>
                                                         <Grid.Item className={styles.griditem}>
                                                             <div className={styles.skilltitle}>
-                                                            <div>技能名称</div>
-                                                            <div>(初始)[最终]</div>
+                                                                <div>技能名称</div>
+                                                                <div>(初始)[最终]</div>
                                                             </div>
                                                         </Grid.Item>
                                                         <Grid.Item className={styles.griditem}>
-                                                            <div className={styles.skilltitle}  style={{color: pointSkills[0] < pointSkillUse[0]?"red":"black"}}>
+                                                            <div className={styles.skilltitle} style={{ color: pointSkills[0] < pointSkillUse[0] ? "red" : "black" }}>
                                                                 <div>本职技能点</div>
                                                                 <div >{pointSkillUse[0]}/{pointSkills[0]}</div>
                                                             </div>
-                                                            
+
                                                         </Grid.Item>
-                                                        <Grid.Item className={styles.griditem} style={{color: pointSkills[1] < pointSkillUse[1]?"red":"black"}}>
+                                                        <Grid.Item className={styles.griditem} style={{ color: pointSkills[1] < pointSkillUse[1] ? "red" : "black" }}>
                                                             <div className={styles.skilltitle}>
-                                                            <div>兴趣技能点</div>
-                                                            <div>{pointSkillUse[1]}/{pointSkills[1]}</div>
+                                                                <div>兴趣技能点</div>
+                                                                <div>{pointSkillUse[1]}/{pointSkills[1]}</div>
                                                             </div>
                                                         </Grid.Item>
                                                         {
@@ -1230,18 +1230,18 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                                                                 className={styles.griditem}
                                                                                 onClick={(skill[itemwork["index"]].sub) ? (() => startSetSkillSubAny(skill[itemwork["index"]].subList, itemwork["index"])) : (() => { })}
                                                                                 style={{ backgroundColor: "rgba(250,150,10," + ((skill[itemwork["index"]].workPoint + skill[itemwork["index"]].defaultPoint + skill[itemwork["index"]].interPoint) / 100).toString() + ")" }}
-                                                                                key = {index+"1"}
+                                                                                key={index + "1"}
                                                                             >
                                                                                 <div className={styles.skilltext} style={{ "color": (skill[itemwork.index].sub && !skill[itemwork.index].subName) ? "darkblue" : "black" }}>
                                                                                     {skill[itemwork["index"]].sub ? (skill[itemwork["index"]].name + ":" + (skill[itemwork["index"]].subName ? skill[itemwork["index"]].subName : "未选择")) :
                                                                                         skill[itemwork["index"]].showName}
-                                                                                        {skill[itemwork.index].ensurePoint>0?"☘️"+skill[itemwork.index].ensurePoint : ""}
-                                                                                        <br />({skill[itemwork["index"]].defaultPoint})[{skill[itemwork["index"]].defaultPoint + skill[itemwork["index"]].workPoint + skill[itemwork["index"]].interPoint+ skill[itemwork["index"]].ensurePoint}]
+                                                                                    {skill[itemwork.index].ensurePoint > 0 ? "☘️" + skill[itemwork.index].ensurePoint : ""}
+                                                                                    <br />({skill[itemwork["index"]].defaultPoint})[{skill[itemwork["index"]].defaultPoint + skill[itemwork["index"]].workPoint + skill[itemwork["index"]].interPoint + skill[itemwork["index"]].ensurePoint}]
                                                                                 </div>
                                                                             </Grid.Item>
                                                                             <Grid.Item
                                                                                 className={styles.griditem}
-                                                                                key = {index+"2"}
+                                                                                key={index + "2"}
                                                                                 style={{ backgroundColor: "rgba(250,150,10," + (skill[itemwork["index"]].workPoint / (100 - skill[itemwork["index"]].defaultPoint)).toString() + ")" }}
                                                                             >
                                                                                 <div className={styles.skillinput} >
@@ -1250,7 +1250,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                                                                 </div></Grid.Item>
                                                                             <Grid.Item
                                                                                 className={styles.griditem}
-                                                                                key = {index+"3"}
+                                                                                key={index + "3"}
                                                                                 style={{ backgroundColor: "rgba(250,150,10," + (skill[itemwork["index"]].interPoint / (100 - skill[itemwork["index"]].defaultPoint)).toString() + ")" }}
                                                                             >
 
@@ -1261,30 +1261,30 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                                                                 </div></Grid.Item>
                                                                         </>
                                                                         : <>
-                                                                            <Grid.Item key = {index+"3"} className={styles.griditem} onClick={() => startSetSkillSub(itemwork, index)}><div style={{ color: "red" }} className={styles.skilltext}>{"[点击选择]"}<br />({"0"})</div></Grid.Item>
-                                                                            <Grid.Item key = {index+"4"} className={styles.griditem} ><div className={styles.skillinput} ></div></Grid.Item>
-                                                                            <Grid.Item key = {index+"5"} className={styles.griditem} ><div className={styles.skillinput} ></div></Grid.Item>
+                                                                            <Grid.Item key={index + "3"} className={styles.griditem} onClick={() => startSetSkillSub(itemwork, index)}><div style={{ color: "red" }} className={styles.skilltext}>{"[点击选择]"}<br />({"0"})</div></Grid.Item>
+                                                                            <Grid.Item key={index + "4"} className={styles.griditem} ><div className={styles.skillinput} ></div></Grid.Item>
+                                                                            <Grid.Item key={index + "5"} className={styles.griditem} ><div className={styles.skillinput} ></div></Grid.Item>
                                                                         </>
 
                                                                 ))
                                                                 : getSkillFromType(skill, item.sub).map((value, index) => (
                                                                     <>
                                                                         <Grid.Item
-                                                                             key = {index+"7"}
+                                                                            key={index + "7"}
                                                                             className={styles.griditem} onClick={(skill[value.index].sub) ? (() => startSetSkillSubAny(skill[value.index].subList, value.index)) : (() => { })}
                                                                             style={{ backgroundColor: "rgba(250,150,10," + ((skill[value.index].workPoint + skill[value.index].defaultPoint + skill[value.index].interPoint) / 100).toString() + ")" }}
                                                                         >
 
                                                                             <div className={styles.skilltext} style={{ "color": (skill[value.index].sub && !skill[value.index].subName) ? "darkblue" : "black" }}>
-                                                                                {skill[value.index].sub ? 
-                                                                                (skill[value.index].name + ":" + (skill[value.index].subName ? skill[value.index].subName : "未选择")) 
-                                                                                : skill[value.index].showName}{skill[value.index].ensurePoint>0?"☘️"+skill[value.index].ensurePoint : ""}
+                                                                                {skill[value.index].sub ?
+                                                                                    (skill[value.index].name + ":" + (skill[value.index].subName ? skill[value.index].subName : "未选择"))
+                                                                                    : skill[value.index].showName}{skill[value.index].ensurePoint > 0 ? "☘️" + skill[value.index].ensurePoint : ""}
                                                                                 <br />({skill[value.index].defaultPoint})[{skill[value["index"]].defaultPoint + skill[value["index"]].workPoint + skill[value["index"]].interPoint + skill[value["index"]].ensurePoint}]
 
                                                                             </div>
-                                                                            </Grid.Item>
+                                                                        </Grid.Item>
 
-                                                                        <Grid.Item className={styles.griditem}  key = {index+"8"}
+                                                                        <Grid.Item className={styles.griditem} key={index + "8"}
                                                                             style={{ backgroundColor: "rgba(250,150,10," + (skill[value["index"]].workPoint / (100 - skill[value["index"]].defaultPoint)).toString() + ")" }}
                                                                         ><div className={styles.skillinput} >
                                                                                 {skill[value.index].levelup && skill[value.index].work ?
@@ -1292,7 +1292,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                                                                     <Stepper step={5} defaultValue={0} min={0} max={100 - skill[value.index].defaultPoint - skill[value.index].interPoint} value={skill[value.index].workPoint} onChange={val => setWorkPoint(val, value.index)} />
                                                                                     : <></>}
                                                                             </div></Grid.Item>
-                                                                        <Grid.Item className={styles.griditem}  key = {index+"9"}
+                                                                        <Grid.Item className={styles.griditem} key={index + "9"}
                                                                             style={{ backgroundColor: "rgba(250,150,10," + (skill[value["index"]].interPoint / (100 - skill[value["index"]].defaultPoint)).toString() + ")" }}
                                                                         ><div className={styles.skillinput} >
                                                                                 {skill[value.index].levelup && skill[value.index].name !== "信用评级" ?
@@ -1331,21 +1331,28 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                                     <div className={styles.skilltitle}>名称<br />(初始)[最终]</div>
                                                 </Grid.Item>
                                                 <Grid.Item className={styles.griditem}>
-                                                    <div className={styles.skilltitle}>本职技能点</div>
+                                                    <div className={styles.skilltitle} style={{ color: pointSkills[0] < pointSkillUse[0] ? "red" : "black" }}>
+                                                        <div>本职技能点</div>
+                                                        <div >{pointSkillUse[0]}/{pointSkills[0]}</div>
+                                                    </div>
+
                                                 </Grid.Item>
-                                                <Grid.Item className={styles.griditem}>
-                                                    <div className={styles.skilltitle}>兴趣技能点</div>
+                                                <Grid.Item className={styles.griditem} style={{ color: pointSkills[1] < pointSkillUse[1] ? "red" : "black" }}>
+                                                    <div className={styles.skilltitle}>
+                                                        <div>兴趣技能点</div>
+                                                        <div>{pointSkillUse[1]}/{pointSkills[1]}</div>
+                                                    </div>
                                                 </Grid.Item>
                                                 {
                                                     getSkillHaveAdd(skill).map((value, index) => (
                                                         <>
                                                             <Grid.Item
-                                                             key = {index+"10"}
+                                                                key={index + "10"}
                                                                 className={styles.griditem} onClick={(skill[value.index].sub) ? (() => startSetSkillSubAny(skill[value.index].subList, value.index)) : (() => { })}
                                                                 style={{ backgroundColor: "rgba(250,150,10," + ((skill[value.index].workPoint + skill[value.index].defaultPoint + skill[value.index].interPoint) / 100).toString() + ")" }}
                                                             >
                                                                 <div className={styles.skilltext} style={{ "color": (skill[value.index].sub && !skill[value.index].subName) ? "darkblue" : "black" }}>{skill[value.index].sub ? (skill[value.index].name + ":" + (skill[value.index].subName ? skill[value.index].subName : "未选择")) : skill[value.index].showName}<br />({skill[value.index].defaultPoint})[{skill[value["index"]].defaultPoint + skill[value["index"]].workPoint + skill[value["index"]].interPoint}]</div></Grid.Item>
-                                                            <Grid.Item className={styles.griditem}  key = {index+"11"}
+                                                            <Grid.Item className={styles.griditem} key={index + "11"}
                                                                 style={{ backgroundColor: "rgba(250,150,10," + (skill[value["index"]].workPoint / (100 - skill[value["index"]].defaultPoint)).toString() + ")" }}>
                                                                 <div className={styles.skillinput} >
                                                                     {skill[value.index].levelup && skill[value.index].work ?
@@ -1353,7 +1360,7 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                                                         <Stepper step={5} defaultValue={0} min={0} max={100 - skill[value.index].defaultPoint - skill[value.index].interPoint} value={skill[value.index].workPoint} onChange={val => setWorkPoint(val, value.index)} />
                                                                         : <></>}
                                                                 </div></Grid.Item>
-                                                            <Grid.Item className={styles.griditem} key = {index+"12"}
+                                                            <Grid.Item className={styles.griditem} key={index + "12"}
                                                                 style={{ backgroundColor: "rgba(250,150,10," + (skill[value["index"]].interPoint / (100 - skill[value["index"]].defaultPoint)).toString() + ")" }}
                                                             ><div className={styles.skillinput} >
                                                                     {skill[value.index].levelup && skill[value.index].name !== "信用评级" ?
@@ -1366,8 +1373,8 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                                                 }
                                             </Grid>
                                         </div>
-                                        <div style={{position:"fixed",bottom:"10px",right:"10px"}}>
-                                            <Button block color="success" onClick={()=>setPopSwitch(true)}>技能成长</Button>
+                                        <div style={{ position: "fixed", bottom: "10px", right: "10px" }}>
+                                            <Button block color="success" onClick={() => setPopSwitch(true)}>技能成长</Button>
                                         </div>
 
                                     </div>
@@ -1486,15 +1493,15 @@ export default function Card({ pointatt, atttime, pcid, completeFun }: { pointat
                         </Form.Item>
                         <Form.Header>经济状况</Form.Header>
                         <Form.Item name="CR" label="生活水平" help="角色的生活水平，由信用等级决定，若KP无特别说明，无需改动">
-                            <Input/>
+                            <Input />
                         </Form.Item>
                         <Form.Item name="现金" label="现金" help="角色持有的现金，由信用等级决定，若KP无特别说明，无需改动">
-                            <Input/>
+                            <Input />
                         </Form.Item>
                         <Form.Item name="资产" label="资产" help="角色的资产状况，由信用等级决定，若KP无特别说明，无需改动">
                             <Input />
                         </Form.Item>
-                        <Form.Item name="消费水平" label="消费水平"  help="每日消费水准，由信用等级决定，若KP无特别说明，无需改动">
+                        <Form.Item name="消费水平" label="消费水平" help="每日消费水准，由信用等级决定，若KP无特别说明，无需改动">
                             <Input />
                         </Form.Item>
                         <Form.Header>克苏鲁神话</Form.Header>

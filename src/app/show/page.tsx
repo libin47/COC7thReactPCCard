@@ -2,7 +2,7 @@
 import styles from "./page.module.css";
 import { useState, useEffect } from 'react'
 import { InfoModal, SkillModal } from '../card'
-import { ATT_Type } from '../data'
+import { ATT_Type, hero_skill_default } from '../data'
 import {
   Form,
   Input,
@@ -87,6 +87,35 @@ export default function PCshow() {
               </Grid.Item>
             </Grid>
           </div>
+
+          {
+            info.hero && info.hero>0?
+            <div className={styles.baseinfo}>
+            <Grid columns={2}>
+              <Grid.Item className={styles.basegrid}>
+              🦸英雄级别:{info.hero}
+              </Grid.Item>
+              <Grid.Item className={styles.basegrid}>
+              🦸英雄类别:{info.heroinfo.name}
+              </Grid.Item>
+              <Grid.Item className={styles.basegrid}>
+              🦸英雄天赋:{info.heroinfo.skill.join(",")}
+              </Grid.Item>
+              <Grid.Item className={styles.basegrid}>
+              🦸英雄主属性:{info.heroinfo.mainatt}
+              </Grid.Item>
+              {
+                info.heroinfo.skill.map((item:any)=>(
+                  <Grid.Item className={styles.attgrid} key={item}>
+                  🦸【{item}】<br></br>{hero_skill_default[item]}
+                </Grid.Item>
+                ))
+              }
+            </Grid>
+          </div>
+            :<></>
+          }
+
 
           <div className={styles.attinfo}>
             <div className={styles.atttitle}>属性</div>

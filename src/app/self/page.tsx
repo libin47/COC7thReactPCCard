@@ -189,7 +189,7 @@ export default function Home() {
     return (<>
       {
         iscreate ?
-          <Card pointatt={pointAtt} atttime={attTime} pcid="" completeFun={commit_new} />
+          <Card pointatt={pointAtt} atttime={attTime} hero={-1} pcid="" completeFun={commit_new} />
           :
           edit ?
             <Card pointatt={pointAtt} atttime={attTime} pcid={edit} completeFun={update_card} />

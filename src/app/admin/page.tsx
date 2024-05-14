@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import { useState, useEffect } from 'react'
 import { InfoModal, SkillModal, IModal } from "../card";
 import Home  from '../page'
-import { ATT_Type } from '../data'
+import { ATT_Type, hero_skill_default } from '../data'
 import {
   Form,
   Input,
@@ -30,7 +30,7 @@ interface GroupModal {
   status: boolean,
   Gaming: string,
   group_card: InfoModal[],
-  config: {point: number, dicetime:number, succnum?:number, failnum?:number},
+  config: {hero:number, point: number, dicetime:number, succnum?:number, failnum?:number},
   card: { [key: string]: InfoModal }
 }
 
@@ -488,6 +488,31 @@ function CardEdit({ card }: { card: InfoModal }) {
             <Input prefix="居住地:" defaultValue={info.info.wherelive} onChange={(e) => setinfo(e, "wherelive")} />
           </Col>
         </Row>
+        {
+          info.hero && info.hero>0?
+          <>
+          <Row>
+            <Col span={12} className={styles.basegrid}>
+              <Input readOnly prefix="英雄级别:" defaultValue={info.heroinfo.name + "*" + info.hero}  />
+            </Col>
+            <Col span={12} className={styles.basegrid}>
+              <Input readOnly prefix="天赋:" defaultValue={info.heroinfo.skill.join("，")}  />
+            </Col>
+            
+          </Row>
+          {
+            info.heroinfo.skill.map((item:any)=>(
+              <Row key={item}>
+            <Col span={24} className={styles.basegrid}>
+            🦸【{item}】{hero_skill_default[item]}
+            </Col>
+            
+          </Row>
+            ))
+          }
+          </>
+        :<></>
+        }
         <Button block type="primary" onClick={update}>更新</Button>
       </div>
 
@@ -556,18 +581,19 @@ export default function Admin() {
 
   const setnum= (e:any, name:string)=>{
     if(data){
-      if(e){
+
+        console.log(e)
         if(name==="point"){ data.config.point = e }
         else if(name==="dicetime"){ data.config.dicetime = e }
         else if(name==="succnum"){ data.config.succnum = e}
         else if(name==="failnum"){ data.config.failnum = e }
+        else if(name==="hero"){ data.config.hero = e }
+        console.log(data.config)
       }
-
-      
-    }
   }
 
   const handleWOk = ()=>{
+    // console.log(data)
     setData(data)
     setRules(false)
     update(data)
@@ -587,11 +613,14 @@ export default function Admin() {
       onOk={handleWOk}
       onCancel={handleWCancel}>
       <Flex wrap="wrap" gap="small" justify={'center'}>
-        <InputNumber className={styles.skillinput} addonBefore={"属性随机次数:"} defaultValue={data.config.point} onChange={(e) => setnum(e, "point")} />
-        <InputNumber className={styles.skillinput} addonBefore={"属性购点总值:"} defaultValue={data.config.dicetime} onChange={(e) => setnum(e, "dicetime")} />
+      <InputNumber className={styles.skillinput} addonBefore={"角色类型:"} defaultValue={ data.config.hero? data.config.hero:"0"} onChange={(e) => setnum(e, "hero")} />
+      
+        <InputNumber className={styles.skillinput} addonBefore={"属性购点总值:"} defaultValue={data.config.point} onChange={(e) => setnum(e, "point")} />
+        <InputNumber className={styles.skillinput} addonBefore={"属性随机次数:"} defaultValue={data.config.dicetime} onChange={(e) => setnum(e, "dicetime")} />
         <InputNumber className={styles.skillinput} addonBefore={"大成功:"} 
         defaultValue={ data.config.succnum? data.config.succnum:"默认"} onChange={(e) => setnum(e, "succnum")} />
         <InputNumber className={styles.skillinput} addonBefore={"大失败:"} defaultValue={ data.config.failnum? data.config.failnum:"默认"} onChange={(e) => setnum(e, "failnum")} />
+        
       </Flex>
     </Modal>
       :<></>

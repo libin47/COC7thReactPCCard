@@ -18,7 +18,7 @@ import {
   Modal,
   Stepper
 } from 'antd-mobile'
-import { api_url } from "./config";
+import { api_url, page_url } from "./config";
 import Card from './card'
 
 async function create2net(pc: any, userid: string, groupid: string) {
@@ -83,33 +83,65 @@ async function link2net(groupid: string, userid: string, pcid: string) {
   return rj.ok
 }
 
-function ImportSelf({ group, user, pcid, data }: { group: string, user: string, pcid: string, data: { [key: string]: any }[] }) {
+function ImportSelf({ group, user, pcid, data, hero }: { group: string, user: string, pcid: string, data: { [key: string]: any }[], hero:number }) {
   const userData = data
   const linkFun = function (index: number) {
     const data = userData[index]
-    link2net(group, user, data["_id"]).then(res => {
-      if (res) {
-        Modal.alert({ content: '已成功关联！', onConfirm() { window.location.reload() }, })
-      }
-    })
+    if((data.hero == hero) || (!data.hero && !hero)){
+      link2net(group, user, data["_id"]).then(res => {
+        if (res) {
+          Modal.alert({ content: '已成功关联！', onConfirm() { window.location.reload() }, })
+        }
+      })
+    } else{
+      Modal.confirm({ content: '该卡与当前群规的英雄类别不一致，是否继续？',
+      onConfirm(){link2net(group, user, data["_id"]).then(res => {
+        if (res) {
+          Modal.alert({ content: '已成功关联！', onConfirm() { window.location.reload() }, })
+        }
+      })}, 
+      onClose() { return }, })
+    }
+    
   }
   // 将其他群里的数据导入
   const daoruFun = function (index: number) {
     const data = userData[index]
     // 已有数据的更新，没有数据的新建
-    if (pcid) {
-      update2net(data, pcid).then(res => {
-        if (res) {
-          Modal.alert({ content: '复制并覆盖当前群角色卡！', onConfirm() { window.location.reload() }, })
+    if((data.hero == hero) || (!data.hero && !hero)){
+      if (pcid) {
+        update2net(data, pcid).then(res => {
+          if (res) {
+            Modal.alert({ content: '复制并覆盖当前群角色卡！', onConfirm() { window.location.reload() }, })
+          }
+        })
+      } else {
+        create2net(data, user, group).then(res => {
+          if (res) {
+            Modal.alert({ content: '复制并新建到本群角色卡！', onConfirm() { window.location.reload() }, })
+          }
+        })
+      }
+    }else{
+      Modal.confirm({ content: '该卡与当前群规的英雄类别不一致，是否继续？',
+      onConfirm(){
+        if (pcid) {
+          update2net(data, pcid).then(res => {
+            if (res) {
+              Modal.alert({ content: '复制并覆盖当前群角色卡！', onConfirm() { window.location.reload() }, })
+            }
+          })
+        } else {
+          create2net(data, user, group).then(res => {
+            if (res) {
+              Modal.alert({ content: '复制并新建到本群角色卡！', onConfirm() { window.location.reload() }, })
+            }
+          })
         }
-      })
-    } else {
-      create2net(data, user, group).then(res => {
-        if (res) {
-          Modal.alert({ content: '复制并新建到本群角色卡！', onConfirm() { window.location.reload() }, })
-        }
-      })
+    }, 
+      onClose() { return }, })
     }
+
 
   }
 
@@ -119,10 +151,10 @@ function ImportSelf({ group, user, pcid, data }: { group: string, user: string, 
       {
         userData.map((item: any, value: number) => (
           <div className={styles.onecard} key={value} style={{ backgroundColor: item.group ? "lightgoldenrodyellow" : "white" }}>
-            <div className={styles.cardLeft}>
+            <div className={styles.cardLeft} onClick={() => window.location.href=page_url+"show?pcid="+item._id}>
               {item.group ? <div>来自群：{item["group"].map((item:any)=>(item))}</div> : <></>}
               <div>[{item.info["time"] ? item.info["time"] : "年代未知"} / {item.info["wherelive"] ? item.info["wherelive"] : "居住地未知"}]</div>
-              <div>{item.info["sex"] === "女" ? "♀️" : "♂️"}{item["name"]} - {item["职业"]}</div>
+              <div>{item.info["sex"] === "女" ? "♀️" : "♂️"}{item["name"]} - {item["职业"]}{item["hero"]?" - 🦸"+item["hero"]:""}</div>
             </div>
             <div className={styles.cardRight}>
             <Button color="primary" onClick={() => linkFun(value)}>关联</Button>
@@ -135,23 +167,43 @@ function ImportSelf({ group, user, pcid, data }: { group: string, user: string, 
   </>)
 }
 
-function ImportPage({ group, user, pcid }: { group: string, user: string, pcid: string }) {
+function ImportPage({ group, user, pcid, hero }: { group: string, user: string, pcid: string, hero:number  }) {
   const [temData, setTemData] = useState<{ group: { [key: string]: any }[], admin: { [key: string]: any }[] }>({ group: [], admin: [] })
   const daoruFun = function (data: any) {
-    // 已有数据的更新，没有数据的新建
-    if (pcid) {
-      update2net(data, pcid).then(res => {
-        if (res) {
-          Modal.alert({ content: '已成功提交！', onConfirm() { window.location.reload() }, })
+    if((data.hero == hero) || (!data.hero && !hero)){
+      if (pcid) {
+        update2net(data, pcid).then(res => {
+          if (res) {
+            Modal.alert({ content: '已成功提交！', onConfirm() { window.location.reload() }, })
+          }
+        })
+      } else {
+        create2net(data, user, group).then(res => {
+          if (res) {
+            Modal.alert({ content: '已成功提交！', onConfirm() { window.location.reload() }, })
+          }
+        })
+      }
+    } else{
+      Modal.confirm({ content: '该卡与当前群规的英雄类别不一致，是否继续？',
+      onConfirm(){
+        if (pcid) {
+          update2net(data, pcid).then(res => {
+            if (res) {
+              Modal.alert({ content: '已成功提交！', onConfirm() { window.location.reload() }, })
+            }
+          })
+        } else {
+          create2net(data, user, group).then(res => {
+            if (res) {
+              Modal.alert({ content: '已成功提交！', onConfirm() { window.location.reload() }, })
+            }
+          })
         }
-      })
-    } else {
-      create2net(data, user, group).then(res => {
-        if (res) {
-          Modal.alert({ content: '已成功提交！', onConfirm() { window.location.reload() }, })
-        }
-      })
+    }, 
+      onClose() { return }, })
     }
+
   }
 
   const get_tem_data = async (group: string) => {
@@ -178,9 +230,9 @@ function ImportPage({ group, user, pcid }: { group: string, user: string, pcid: 
         temData["admin"].length > 0 ? temData["admin"].map((item: any, value: number) => (
 
           <div className={styles.onecard} key={item}>
-            <div className={styles.cardLeft}>
+            <div className={styles.cardLeft} onClick={() => window.location.href=page_url+"show?pcid="+item._id}>
               <div>[{item.info["time"] ? item.info["time"] : "年代未知"} / {item.info["wherelive"] ? item.info["wherelive"] : "居住地未知"}]</div>
-              <div>{item.info["sex"] === "女" ? "♀️" : "♂️"}{item["name"]} - {item["职业"]}</div>
+              <div>{item.info["sex"] === "女" ? "♀️" : "♂️"}{item["name"]} - {item["职业"]}{item["hero"]?" - 🦸"+item["hero"]:""}</div>
             </div>
             <div className={styles.cardRight}>
               <Button color='success' onClick={() => daoruFun(item)}>导入</Button>
@@ -192,10 +244,10 @@ function ImportPage({ group, user, pcid }: { group: string, user: string, pcid: 
       <div style={{ paddingTop: "32px" }}>本群预设角色卡</div>
       {
         temData["group"].length > 0 ? temData["group"].map((item: any, value: number) => (
-          <div className={styles.onecard} key={item}>
+          <div className={styles.onecard} key={item} onClick={() => window.location.href=page_url+"show?pcid="+item._id}>
             <div className={styles.cardLeft}>
               <div>[{item.info["time"] ? item.info["time"] : "年代未知"} / {item.info["wherelive"] ? item.info["wherelive"] : "居住地未知"}]</div>
-              <div>{item.info["sex"] === "女" ? "♀️" : "♂️"}{item["name"]} - {item["职业"]}</div>
+              <div>{item.info["sex"] === "女" ? "♀️" : "♂️"}{item["name"]} - {item["职业"]}{item["hero"]?" - 🦸"+item["hero"]:""}</div>
             </div>
             <div className={styles.cardRight}>
               <Button color='success' onClick={() => daoruFun(item)}>导入</Button>
@@ -209,7 +261,7 @@ function ImportPage({ group, user, pcid }: { group: string, user: string, pcid: 
 }
 
 // admin界面
-function AdminPage({ group, pointAtt, attTime }: { group: string, pointAtt: number, attTime: number }) {
+function AdminPage({ group, pointAtt, attTime, heroLevel }: { group: string, pointAtt: number, attTime: number, heroLevel:number }) {
   const [temData, setTemData] = useState<{ group: { [key: string]: any }[], admin: { [key: string]: any }[] }>({ group: [], admin: [] })
   const [edit, setEdit] = useState("")
   const [create, setCreate] = useState(false)
@@ -284,11 +336,10 @@ function AdminPage({ group, pointAtt, attTime }: { group: string, pointAtt: numb
             {
               temData["group"].length > 0 ? temData["group"].map((item: any, value: number) => (
                 <>
-
                   <div className={styles.onecard} key={item}>
-                    <div className={styles.cardLeft}>
+                    <div className={styles.cardLeft} onClick={() => window.location.href=page_url+"show?pcid="+item._id}>
                       <div>[{item.info["time"] ? item.info["time"] : "年代未知"} / {item.info["wherelive"] ? item.info["wherelive"] : "居住地未知"}]</div>
-                      <div>{item.info["sex"] === "女" ? "♀️" : "♂️"}{item["name"]} - {item["职业"]}</div>
+                      <div>{item.info["sex"] === "女" ? "♀️" : "♂️"}{item["name"]} - {item["职业"]}{item["hero"]?" - 🦸"+item["hero"]:""}</div>
                     </div>
                     <div className={styles.cardRight}>
                       <Button color='success' onClick={() => setEdit(item._id)}>编辑</Button>
@@ -310,7 +361,7 @@ function AdminPage({ group, pointAtt, attTime }: { group: string, pointAtt: numb
   return (
     <>
       {
-        create ? <Card pointatt={pointAtt} atttime={attTime} pcid="" completeFun={create_tem} /> :
+        create ? <Card pointatt={pointAtt} atttime={attTime} pcid="" completeFun={create_tem} hero={heroLevel}/> :
           edit ? <Card pointatt={pointAtt} atttime={attTime} pcid={edit} completeFun={update_tem} /> : <MainShow />
       }
     </>
@@ -323,6 +374,7 @@ function AdminPage({ group, pointAtt, attTime }: { group: string, pointAtt: numb
 export default function Home() {
   const [pointAtt, setPointAtt] = useState<number>(500)
   const [attTime, setAttTime] = useState<number>(5) //属性随机次数
+  const [heroLevel, setHeroLevel] = useState<number>(0) 
 
   const [userid, setUserid] = useState("")
   const [groupid, setGroupid] = useState("")
@@ -366,8 +418,10 @@ export default function Home() {
     const data = rj.data
     const pointAtt_ = +data["point"] ? +data["point"] : 500
     const dicetime_ = +data["dicetime"] ? +data["dicetime"] : 5
+    const heroLevel_ = +data["hero"] ? +data["hero"] : 0
     setAttTime(dicetime_)
     setPointAtt(pointAtt_)
+    setHeroLevel(heroLevel_)
   }
 
   useEffect(() => {
@@ -417,16 +471,16 @@ export default function Home() {
   function MainShow() {
     return (
       <div className={styles.mainbg}>
-        <ImportSelf group={groupid} user={userid} pcid={userData?.user_group._id} data={userData ? userData.user : []} />
+        <ImportSelf group={groupid} user={userid} pcid={userData?.user_group._id} data={userData ? userData.user : []} hero={heroLevel} />
 
         <div className={styles.cardbg}>
           <div>本群我的角色卡</div>
           {
             userData?.user_group["name"] ?
               <div className={styles.onecard} >
-                <div className={styles.cardLeft}>
+                <div className={styles.cardLeft} onClick={() => window.location.href=page_url+"show?pcid="+userData?.user_group._id}>
                   <div>[{userData?.user_group.info["time"] ? userData?.user_group.info["time"] : "年代未知"} / {userData?.user_group.info["wherelive"] ? userData?.user_group.info["wherelive"] : "居住地未知"}]</div>
-                  <div>{userData?.user_group.info["sex"] === "女" ? "♀️" : "♂️"}{userData?.user_group["name"]} - {userData?.user_group["职业"]} </div>
+                  <div>{userData?.user_group.info["sex"] === "女" ? "♀️" : "♂️"}{userData?.user_group["name"]} - {userData?.user_group["职业"]}{userData?.user_group["hero"]?" - 🦸"+userData?.user_group["hero"]:""} </div>
 
                 </div>
                 <div className={styles.cardRight}>
@@ -451,7 +505,7 @@ export default function Home() {
     return (<>
       {
         iscreate ?
-          <Card pointatt={pointAtt} atttime={attTime} pcid="" completeFun={commit_new} />
+          <Card pointatt={pointAtt} atttime={attTime} hero={heroLevel} pcid="" completeFun={commit_new} />
           :
           isedit ?
             <Card pointatt={pointAtt} atttime={attTime} pcid={userData?.user_group._id} completeFun={update_pc} />
@@ -465,7 +519,7 @@ export default function Home() {
   function Templete() {
     return (<>
       <div className={styles.mainbg2}>
-        <ImportPage group={groupid} user={userid} pcid={userData?.user_group._id} />
+        <ImportPage group={groupid} user={userid} pcid={userData?.user_group._id}  hero={heroLevel}/>
         <div><Button block color='success' size='large' onClick={() => { setIsTem(false) }} style={{ marginTop: 32 }}>返回</Button></div>
         <div className={styles.newtemtext}> <div onClick={() => { setAdmin(true) }}>模板管理</div> </div>
       </div>
@@ -477,7 +531,7 @@ export default function Home() {
 
   return (<>{
     admin ?
-      <AdminPage group={groupid} pointAtt={pointAtt} attTime={attTime} />
+      <AdminPage group={groupid} pointAtt={pointAtt} attTime={attTime} heroLevel={heroLevel} />
       :
       isTem ? <Templete /> : <User />
   }</>
